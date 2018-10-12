@@ -7,11 +7,17 @@ const rl = readline.createInterface({
   output: process.stdout
 });
 
+// hand1 enters move, hand2 enters move
+// check to see if move is valid
+// if the hand is valid, then check to see if hand1 is equal to hand2 then show text 'tie'
+// if move is valid and hand1 not equal to hand2 then check for win
+// 
+
 
 function rockPaperScissors(hand1, hand2) {
 
   // Write code here
-
+return 'hello';
 }
 
 function getPrompt() {
