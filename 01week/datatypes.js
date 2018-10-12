@@ -2,10 +2,34 @@
 
 // Write a JavaScript program to display the current day and time.
 
-// const current = newDate(date ,month ,year) =>{
-//   date = getDate();
-//   month = getMonth();
-// }
+const currentDate = newDate() =>{
+    return today.getDate().getMonth()+1.getFullYear();
+}
+
+currentDate
+
+var today = new Date();
+var dd = today.getDate();
+var mm = today.getMonth()+1; //January is 0!
+var yyyy = today.getFullYear();
+
+if(dd<10) {
+    dd = '0'+dd
+} 
+
+if(mm<10) {
+    mm = '0'+mm
+} 
+
+today = mm + '/' + dd + '/' + yyyy;
+document.write(today);
+
+const current = newDate(date ,month ,year) =>{
+    return 
+  date = getDate();
+  month = getMonth();
+}
+console.log(current())
 
 // Write a JavaScript program to convert a number to a string.
 
@@ -17,7 +41,7 @@ console.log(typeof convertToString(20))
 
 const convertToNumber = (stringValue1) => Number(stringValue1);
 
-console.log(convertToNumber('30') )
+convertToNumber('30')
 console.log(typeof convertToNumber('30'));
 
 // Write a JavaScript program that takes in different datatypes and prints out whether they are a:
