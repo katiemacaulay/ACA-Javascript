@@ -2,34 +2,11 @@
 
 // Write a JavaScript program to display the current day and time.
 
-const currentDate = newDate() =>{
-    return today.getDate().getMonth()+1.getFullYear();
-}
+const currentDate = new Date();
+const currentDateAndTime = (currentDate.getMonth() + 1) + '/' + currentDate.getDate() + '/' + 
+currentDate.getFullYear();
 
-currentDate
-
-var today = new Date();
-var dd = today.getDate();
-var mm = today.getMonth()+1; //January is 0!
-var yyyy = today.getFullYear();
-
-if(dd<10) {
-    dd = '0'+dd
-} 
-
-if(mm<10) {
-    mm = '0'+mm
-} 
-
-today = mm + '/' + dd + '/' + yyyy;
-document.write(today);
-
-const current = newDate(date ,month ,year) =>{
-    return 
-  date = getDate();
-  month = getMonth();
-}
-console.log(current())
+console.log(currentDateAndTime);
 
 // Write a JavaScript program to convert a number to a string.
 
