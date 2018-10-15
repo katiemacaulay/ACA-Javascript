@@ -10,7 +10,15 @@ const rl = readline.createInterface({
 
 function pigLatin(word) {
 
-  // Your code here
+  // check that input is valid
+  // if not return 'valid word.'
+  // create a variable that identifies consonants
+  // create a variable that identify vowels
+  // If so, check the first letter of string- if it is a constonant then move letter to end of string
+  // if it is a vowel then add yay to end of
+  // then check the the next letter of string... continue until you find a vowel
+  // add ay at the end of string 
+  // return new string
 
 }
 
