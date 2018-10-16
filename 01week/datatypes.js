@@ -2,11 +2,12 @@
 
 // Write a JavaScript program to display the current day and time.
 
-const currentDate = new Date();
-const currentDateAndTime = (currentDate.getMonth() + 1) + '/' + currentDate.getDate() + '/' + 
-currentDate.getFullYear();
+const currentDateToday = () => {
+  const todayDate = new Date();
+  return (todayDate.getMonth()+1) + '/'+ todayDate.getDate() + '/' + todayDate.getFullYear();
+}
 
-console.log(currentDateAndTime);
+console.log(currentDateToday());
 
 // Write a JavaScript program to convert a number to a string.
 
