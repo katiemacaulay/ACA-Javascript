@@ -20,6 +20,18 @@ function pigLatin(word) {
   // add ay at the end of string 
   // return new string
 
+  const isValidInput = (word) =>{
+
+  }
+
+  const 
+
+  const makepigLatin = (word) =>{
+    if(isValidInput){
+      if()
+    }
+  }
+
 }
 
 
