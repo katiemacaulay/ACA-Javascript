@@ -43,8 +43,8 @@ const sendToEndOfWord = (word, position) => {
   return cutConsonant.join('') + cutOffPart.join('');
 }
 
-const makePigLatin = (word) => {
-  if(!wordOnlyHasLetters(word)){
+const pigLatin = (word) => {
+  if(!wordOnlyHasLetters(word) || word === ''){
     return word
   }
   const position = findPositionofFirstVowel(word);
@@ -55,7 +55,7 @@ const makePigLatin = (word) => {
 };
 
 const translatePhrase = (ph) => {
-  return ph.split(' ').map(makePigLatin).join(' ');
+  return ph.split(' ').map(pigLatin).join(' ');
 }
 
 let a = translatePhrase("r2d2 was here")
@@ -63,8 +63,8 @@ console.log(a)
 
 
 function getPrompt() {
-  rl.question('word ', (answer) => {
-    console.log( pigLatin(answer) );
+  rl.question('enter a word or phrase: ', (answer) => {
+    console.log( translatePhrase(answer) );
     getPrompt();
   });
 }
