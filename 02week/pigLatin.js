@@ -7,32 +7,59 @@ const rl = readline.createInterface({
   output: process.stdout
 });
 
+ // Create an array of the word using split('')
 
-function pigLatin(word) {
+  // check that input is valid isValid(): 
+ 
+  // create a variable that identifies vowels
+  // create a variable that identify constanants or !vowel
 
-  // check that input is valid
-  // if not return 'valid word.'
-  // create a variable that identifies consonants
-  // create a variable that identify vowels
-  // If so, check the first letter of string- if it is a constonant then move letter to end of string
-  // if it is a vowel then add yay to end of
-  // then check the the next letter of string... continue until you find a vowel
-  // add ay at the end of string 
-  // return new string
+  // function checkFirstLetters (Check the first letters of string)
+  // Take the consonants and move to the end of word function sendToEndOfWord
 
-  const isValidInput = (word) =>{
+  // if the array[0] = vowel then word.push 'y' 'a' 'y'
+  // else return checkFirstLetters + 'a' + 'y'
 
-  }
-
-  const 
-
-  const makepigLatin = (word) =>{
-    if(isValidInput){
-      if()
-    }
-  }
-
+const wordOnlyHasLetters = (word) => {
+  const wordArray = word.split('');
+  const filterLetters = (character) => !parseInt(character);
+  const lettersArray = wordArray.filter(filterLetters)
+  const isValid = (arr1, arr2) => arr1.length == arr2.length;
+  return isValid(wordArray, lettersArray);
 }
+
+const findPositionofFirstVowel = (word) =>{ 
+  const vowel = ['a', 'e', 'i', 'o', 'u'];
+  const wordArray = word.split('');
+  const isVowel = (letter) => !vowel.includes(letter)
+  const someArray = wordArray.map(isVowel)
+  return someArray.indexOf(false)
+}
+
+const sendToEndOfWord = (word, position) => {
+  const wordArray = word.split('');
+  const cutConsonant = wordArray.slice(position);
+  const cutOffPart = wordArray.slice(0, position);
+  return cutConsonant.join('') + cutOffPart.join('');
+}
+
+const makePigLatin = (word) => {
+  if(!wordOnlyHasLetters(word)){
+    return word
+  }
+  const position = findPositionofFirstVowel(word);
+  if(position === 0){
+    return word + 'yay';
+  }
+  return sendToEndOfWord(word, position) + 'ay';
+};
+
+const translatePhrase = (ph) => {
+  return ph.split(' ').map(makePigLatin).join(' ');
+}
+
+let a = translatePhrase("r2d2 was here")
+console.log(a)
 
 
 function getPrompt() {
