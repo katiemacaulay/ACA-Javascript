@@ -19,6 +19,14 @@ if (typeof describe === 'function') {
         assert.equal(rockPaperScissors('Paper', 'SCISSORS'), "Hand two wins!");
         assert.equal(rockPaperScissors('rock ', 'sCiSsOrs'), "Hand one wins!");
       });
+      it('should not allow anything except for characters', () => {
+        assert.equal(rockPaperScissors('rock', 'very large paper'), "invalid!!!!");
+        assert.equal(rockPaperScissors('$%(hh)', 'scissors'), "invalid!!!");
+        assert.equal(rockPaperScissors('555', 'rock'), "invalid!!!");
+        assert.equal(rockPaperScissors('scissors', '677'), "invalid!!!");
+        assert.equal(rockPaperScissors('rock', '%4^*'), "invalid!!!");
+        assert.equal(rockPaperScissors('paper', 'massive paper'), "invalid!!!");
+      });
     });
   } else {
   
