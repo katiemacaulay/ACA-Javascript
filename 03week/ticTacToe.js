@@ -1,5 +1,13 @@
 'use strict';
 
+// player must enter a valid number (0-2);
+// After one player plays, switch players
+// player can only play on squares that have nothing on them/ invalid
+// On the thrid play of X  then  check for win and for anyone after
+// Declare a win: horizonal or vertical or diagonal;
+// array[0].every('x')
+
+
 const assert = require('assert');
 const readline = require('readline');
 const rl = readline.createInterface({
@@ -23,9 +31,12 @@ function printBoard() {
   console.log('2 ' + board[2].join(' | '));
 }
 
-function horizontalWin() {
-  // Your code here
+const horizonalWin = (arr1) =>{
+  const newArray = arr1.set();
+  newArray.length();
 }
+
+console.log(horizonalWin(board))
 
 function verticalWin() {
   // Your code here
