@@ -1,9 +1,11 @@
 'use strict'
 
 const printListOfOlympians = (arr) =>{
-    arr.forEach(console.log(arr))
+  arr.forEach(element => {
+    console.log(element);
+ });
 }
 
-arrh = [ 'Spencer', 'Super Mario', 'Jose', 'Cat Power', 'Lady Heart']
+const arrh = [ 'Spencer', 'Super Mario', 'Jose', 'Cat Power', 'Lady Heart']
 
-printListOfOlympians(arrh)
+printListOfOlympians(arrh);
