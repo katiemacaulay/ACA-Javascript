@@ -21,6 +21,13 @@ let board = [
 ];
 
 let playerTurn = 'X';
+const resetBoard = () => {
+  return [
+    [' ', ' ', ' '],
+    [' ', ' ', ' '],
+    [' ', ' ', ' ']
+  ];
+}
 
 function printBoard() {
   console.log('   0  1  2');
@@ -31,22 +38,13 @@ function printBoard() {
   console.log('2 ' + board[2].join(' | '));
 }
 
-
-const checkForX = (item) => item === 'X';
-const checkForY = (item) => item === 'Y';
-
-
-const checkIfAllSame = (arr) => {
-  if(arr.every(checkForX)){
-    console.log("X's won")
-  } else if(arr.every(checkForY)){
-    console.log("Y's win")
-  }
+const checkPlayerWin = (arr) => {
+  return arr.every((item) => item === playerTurn)
 }
+
 const horizonalWin = () => {
-  board.forEach((item) => {
-    checkIfAllSame(item);
-  })
+  let results = board.filter(checkPlayerWin)
+  return results.length > 0
 }
 const rotateMatrix = (matrix) => {
    let rotatedMatrix = []
@@ -60,16 +58,15 @@ const rotateMatrix = (matrix) => {
 }
 
 const veriticalWin = () => {
-  rotateMatrix(board).forEach((item) => {
-    checkIfAllSame(item);
-  })
+  let results = rotateMatrix(board).filter(checkPlayerWin);
+  return results.length > 0
 }
 
 const diagonalWin = () => {
   const diagonalDown = [board[0][0], board[1][1], board[2][2]];
   const diagonalUp = [board[2][0], board[1][1], board[0][2]];
-  checkIfAllSame(diagonalDown);
-  checkIfAllSame(diagonalUp);
+  let results = [diagonalDown, diagonalUp].filter(checkPlayerWin);
+  return results.length > 0
 }
 
 const switchPlayer = () => {
@@ -80,12 +77,20 @@ const switchPlayer = () => {
   }
 }
 
+function hasWin() {
+  const horizontal = horizonalWin()
+  const vertical = veriticalWin()
+  const diagonal = diagonalWin();
+  return horizontal || vertical || diagonal
+}
+
 function ticTacToe(row, column) {
   board[row][column] = playerTurn;
+  if (hasWin()) {
+    console.log(`Player ${playerTurn} won!`)
+    board = resetBoard();
+  }
   switchPlayer();
-  horizonalWin()
-  veriticalWin()
-  diagonalWin();
 }
 
 function getPrompt() {
