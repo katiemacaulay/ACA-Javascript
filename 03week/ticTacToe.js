@@ -21,6 +21,13 @@ let board = [
 ];
 
 let playerTurn = 'X';
+let counter = 0;
+
+function incrementCounter() {
+  counter++
+}
+
+const catsScratch = () => counter === 9;
 
 const resetBoard = () => {
   return [
@@ -106,8 +113,13 @@ function ticTacToe(row, column) {
     return console.log('Invalid move, try again!')
   }
   board[row][column] = playerTurn;
+  incrementCounter();
   if (checkForWin()) {
     console.log(`Player ${playerTurn} won!`)
+    board = resetBoard();
+  } 
+  if(catsScratch()){
+    console.log("It's a tie! Try again!")
     board = resetBoard();
   }
   switchPlayer();
@@ -118,7 +130,7 @@ function getPrompt() {
   console.log("It's Player " + playerTurn + "'s turn.");
   rl.question('row: ', (row) => {
     rl.question('column: ', (column) => {
-      ticTacToe(row, column);
+      ticTacToe(parseInt(row), parseInt(column));
       getPrompt();
     });
   });
