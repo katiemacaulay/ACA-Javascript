@@ -41,7 +41,12 @@ function printBoard() {
 
 const isValidInput = (row, column) => {
   const validInputs = [0, 1, 2];
-  return validInputs.indexOf(row) > -1 || validInputs.indexOf(column) > -1
+  const isValid = validInputs.indexOf(row) > -1 || validInputs.indexOf(column) > -1
+  return isValid
+}
+
+const isOpenForPlay = (row, column) => {
+  return board[row][column] === ' '
 }
 
 const checksArrayForPlayerWin = (arr) => {
@@ -53,7 +58,7 @@ const checkMatrixForWin = (board) => {
   return results.length > 0
 }
 
-const horizonalWin = () => {
+const horizontalWin = () => {
   return checkMatrixForWin(board);
 }
 
@@ -68,7 +73,7 @@ const rotateMatrix = (matrix) => {
    return rotatedMatrix
 }
 
-const veriticalWin = () => {
+const verticalWin = () => {
   return checkMatrixForWin(rotateMatrix(board))
 }
 
@@ -80,29 +85,28 @@ const diagonalWin = () => {
 
 const switchPlayer = () => {
   if(playerTurn === 'X'){
-    playerTurn = 'Y';
+    playerTurn = 'O';
   } else {
     playerTurn = 'X'
   }
 }
 
-function hasWin() {
-  const horizontal = horizonalWin();
-  const vertical = veriticalWin();
+function checkForWin() {
+  const horizontal = horizontalWin();
+  const vertical = verticalWin();
   const diagonal = diagonalWin();
   return horizontal || vertical || diagonal
 }
 
 function ticTacToe(row, column) {
-  if(isValidInput()){
+  if(!isValidInput(row, column)){
     return console.log('invalid entry, try again!')
   }
-  if (board[row][column] !== ' ') {
-    console.log('Invalid move, try again!')
-    return
+  if (!isOpenForPlay(row, column)) {
+    return console.log('Invalid move, try again!')
   }
   board[row][column] = playerTurn;
-  if (hasWin()) {
+  if (checkForWin()) {
     console.log(`Player ${playerTurn} won!`)
     board = resetBoard();
   }
@@ -124,7 +128,6 @@ function getPrompt() {
 
 
 // Tests
-
 if (typeof describe === 'function') {
 
   describe('#ticTacToe()', () => {
