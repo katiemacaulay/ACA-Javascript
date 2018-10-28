@@ -21,6 +21,7 @@ let board = [
 ];
 
 let playerTurn = 'X';
+
 const resetBoard = () => {
   return [
     [' ', ' ', ' '],
@@ -38,14 +39,24 @@ function printBoard() {
   console.log('2 ' + board[2].join(' | '));
 }
 
-const checkPlayerWin = (arr) => {
+const isValidInput = (row, column) => {
+  const validInputs = [0, 1, 2];
+  return validInputs.indexOf(row) > -1 || validInputs.indexOf(column) > -1
+}
+
+const checksArrayForPlayerWin = (arr) => {
   return arr.every((item) => item === playerTurn)
 }
 
-const horizonalWin = () => {
-  let results = board.filter(checkPlayerWin)
+const checkMatrixForWin = (board) => {
+  let results = board.filter(checksArrayForPlayerWin);
   return results.length > 0
 }
+
+const horizonalWin = () => {
+  return checkMatrixForWin(board);
+}
+
 const rotateMatrix = (matrix) => {
    let rotatedMatrix = []
    for (var x = 0; x < matrix.length; x++) {
@@ -58,15 +69,13 @@ const rotateMatrix = (matrix) => {
 }
 
 const veriticalWin = () => {
-  let results = rotateMatrix(board).filter(checkPlayerWin);
-  return results.length > 0
+  return checkMatrixForWin(rotateMatrix(board))
 }
 
 const diagonalWin = () => {
   const diagonalDown = [board[0][0], board[1][1], board[2][2]];
   const diagonalUp = [board[2][0], board[1][1], board[0][2]];
-  let results = [diagonalDown, diagonalUp].filter(checkPlayerWin);
-  return results.length > 0
+  return checkMatrixForWin([diagonalDown, diagonalUp]);
 }
 
 const switchPlayer = () => {
@@ -78,13 +87,20 @@ const switchPlayer = () => {
 }
 
 function hasWin() {
-  const horizontal = horizonalWin()
-  const vertical = veriticalWin()
+  const horizontal = horizonalWin();
+  const vertical = veriticalWin();
   const diagonal = diagonalWin();
   return horizontal || vertical || diagonal
 }
 
 function ticTacToe(row, column) {
+  if(isValidInput()){
+    return console.log('invalid entry, try again!')
+  }
+  if (board[row][column] !== ' ') {
+    console.log('Invalid move, try again!')
+    return
+  }
   board[row][column] = playerTurn;
   if (hasWin()) {
     console.log(`Player ${playerTurn} won!`)
