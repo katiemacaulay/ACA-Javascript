@@ -31,26 +31,62 @@ function printBoard() {
   console.log('2 ' + board[2].join(' | '));
 }
 
-// const horizonalWin = () =>{
 
-// }
+const checkForX = (item) => item === 'X';
+const checkForY = (item) => item === 'Y';
 
 
-// function verticalWin() {
-//   // Your code here
-// }
+const checkIfAllSame = (arr) => {
+  if(arr.every(checkForX)){
+    console.log("X's won")
+  } else if(arr.every(checkForY)){
+    console.log("Y's win")
+  }
+}
+const horizonalWin = () => {
+  board.forEach((item) => {
+    checkIfAllSame(item);
+  })
+}
+const rotateMatrix = (matrix) => {
+   let rotatedMatrix = []
+   for (var x = 0; x < matrix.length; x++) {
+       rotatedMatrix[x] = []
+       for (var y = 0; y < matrix.length; y++) {
+           rotatedMatrix[x][y] = matrix[y][x]
+       }
+   }
+   return rotatedMatrix
+}
 
-// function diagonalWin() {
-//   // Your code here
-// }
+const veriticalWin = () => {
+  rotateMatrix(board).forEach((item) => {
+    checkIfAllSame(item);
+  })
+}
 
-// function checkForWin() {
-//   // Your code here
-// }
+const diagonalWin = () => {
+  const diagonalDown = [board[0][0], board[1][1], board[2][2]];
+  const diagonalUp = [board[2][0], board[1][1], board[0][2]];
+  checkIfAllSame(diagonalDown);
+  checkIfAllSame(diagonalUp);
+}
 
-// function ticTacToe(row, column) {
-//   // Your code here
-// }
+const switchPlayer = () => {
+  if(playerTurn === 'X'){
+    playerTurn = 'Y';
+  } else {
+    playerTurn = 'X'
+  }
+}
+
+function ticTacToe(row, column) {
+  board[row][column] = playerTurn;
+  switchPlayer();
+  horizonalWin()
+  veriticalWin()
+  diagonalWin();
+}
 
 function getPrompt() {
   printBoard();
