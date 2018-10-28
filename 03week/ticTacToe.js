@@ -31,28 +31,26 @@ function printBoard() {
   console.log('2 ' + board[2].join(' | '));
 }
 
-const horizonalWin = (arr1) =>{
-  const newArray = arr1.set();
-  newArray.length();
-}
+// const horizonalWin = () =>{
 
-console.log(horizonalWin(board))
+// }
 
-function verticalWin() {
-  // Your code here
-}
 
-function diagonalWin() {
-  // Your code here
-}
+// function verticalWin() {
+//   // Your code here
+// }
 
-function checkForWin() {
-  // Your code here
-}
+// function diagonalWin() {
+//   // Your code here
+// }
 
-function ticTacToe(row, column) {
-  // Your code here
-}
+// function checkForWin() {
+//   // Your code here
+// }
+
+// function ticTacToe(row, column) {
+//   // Your code here
+// }
 
 function getPrompt() {
   printBoard();
