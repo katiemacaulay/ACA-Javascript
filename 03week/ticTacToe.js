@@ -48,7 +48,7 @@ function printBoard() {
 
 const isValidInput = (row, column) => {
   const validInputs = [0, 1, 2];
-  const isValid = validInputs.indexOf(row) > -1 || validInputs.indexOf(column) > -1
+  const isValid = validInputs.indexOf(row) > -1 && validInputs.indexOf(column) > -1;
   return isValid
 }
 
