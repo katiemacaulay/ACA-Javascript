@@ -1,3 +1,54 @@
+// Class notes/ whiteboarding
+// Goal: Match user guess to a solution (compare)
+// user inputs guess
+
+// IsValid()- return true, false
+// guess has to be valid- letters a-g in array, guess of 4 letters, can't be blank- 
+// bonus: format guess (lowerCase, trim...)
+// if invalid 'return rules about guesses', return.
+
+// printNewBoard()
+// if guess if valid, print to board- .push()
+
+// calculateHints()
+// if possible, .split('')- into arrays
+// loop through (forEach) guessArray- for index and item;
+// check corroponding index in the forEach in solution array
+//  guessArray.forEach(letters, index){
+  // const correspondingletter = solutionarray[index]
+//       if letter == correspondingletter then add to redDotCOunter
+//   } this would be our reddot main function 
+// else whitedot(solutionArray.includes[letter])
+    // turn guessarr[letter] to 'm'
+//    add to white counter
+  // )} return reddotcounter and whitedotcounter `${}....
+// 
+
+// return hints after valid input
+// hint, you have the right spot exactly OR you have the right letter but in different spot
+// you can create a function to create perciseness (red peg) by same index;
+  // redDot Function- .forEach, forloop or .every()
+// check for all cases that have the same letters in the array; 
+  // whiteDot Function - forEach- .filter(), .every(), .map()
+// then subtract those cases from the persiseness (red dots)- call those (white dots)
+// return
+
+// printHints
+
+
+// checkForWin() return true or false
+//  if guess equals solution then 'you win'
+
+// checkForLoss()
+// guessesRemaining()- turns
+// add turns: 10 turns- should happen as part of the lose function- 'show solution, encourage to play again'
+// array length is part of the counter. 
+// show hints on all turns below 10 turns, only on valid inputs
+
+// reset game()- to original empty board[]
+
+
+
 'use strict';
 
 const assert = require('assert');
