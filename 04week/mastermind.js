@@ -85,26 +85,40 @@ function isWin(clues) {
   return clues[0] === 4
 }
 
-function generateHint(solution, guess) {
-  let solutionArray = solution.split('')
-  let guessArray = guess.split('')
-  let positionallyCorrect = solutionArray.filter((answer, index) => {
-    return solutionArray[index] == guessArray[index];
-  }).length;
-  let inclusionCorrect1 = guessArray.filter((guess) => {
+function getSmallerValue(val1, val2) {
+  if (val1 < val2 ) {
+    return val1
+  } else {
+    return val2
+  }
+}
+
+function getIntersectionCount(solutionArray, guessArray){
+  const solutionContainsGuess = guessArray.filter((guess) => {
     return solutionArray.includes(guess);
   }).length
-  let inclusionCorrect2 = solutionArray.filter((answer) => {
+  const guessContainsSolution = solutionArray.filter((answer) => {
     return guessArray.includes(answer);
   }).length
-  let totalIncludes = 0
-  if (inclusionCorrect1 > inclusionCorrect2 ) {
-    totalIncludes = inclusionCorrect2
-  } else {
-    totalIncludes = inclusionCorrect1
-  }
-  console.log({positionallyCorrect, totalIncludes})
-  return [positionallyCorrect, totalIncludes - positionallyCorrect]
+  let intersectionCount = getSmallerValue(solutionContainsGuess, guessContainsSolution);
+  return intersectionCount
+}
+
+function getRedPegs(solutionArray, guessArray){
+  const redPegs = solutionArray.filter((answer, index) => {
+    return solutionArray[index] == guessArray[index];
+  }).length;
+  return redPegs
+}
+
+function generateHint(solution, guess){
+  const solutionArray = solution.split('')
+  const guessArray = guess.split('')
+  const redPegs = getRedPegs(solutionArray, guessArray)
+  const intersectionCount = getIntersectionCount(solutionArray, guessArray)
+  const whitePegs = intersectionCount - redPegs;
+  console.log({redPegs, whitePegs})
+  return [redPegs, whitePegs]
 }
 
 function mastermind(solution, guess) {
