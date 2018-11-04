@@ -59,7 +59,7 @@ const rl = readline.createInterface({
 });
 
 let board = [];
-let solution = '';
+let solution = ''
 let letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
 
 function printBoard() {
@@ -72,9 +72,9 @@ function generateSolution() {
   let solution = []
   for (let i = 0; i < 4; i++) {
     const randomIndex = getRandomInt(0, letters.length);
-    solution.append(letters[randomIndex]);
+    solution.push(letters[randomIndex]);
   }
-  return solution
+  return solution.join('')
 }
 
 function getRandomInt(min, max) {
@@ -90,6 +90,10 @@ function isValid(guess, validLetters) {
   return guessArray.filter(guess => {
     return validLetters.indexOf(guess) === -1
   }).length === 0;
+}
+
+function normalize(guess){
+  return guess.toLowerCase();
 }
 
 function getSmallerValue(val1, val2) {
@@ -129,15 +133,21 @@ function generateHint(solution, guess){
 }
 
 function mastermind(solution, guess) {
-  // solution = 'abcd'; // Comment this out to generate a random solution
-  // your code here
-  // return clues
+  const normalizedGuess = normalize(guess);
+  if(!isValid(normalizedGuess, letters)){
+    return console.log('insert 4 letters between a and g'); 
+  }
+  const generatedHints = generateHint(solution, normalizedGuess);
+  console.log(`You have ${generatedHints[0]} correct letters and position, and ${generatedHints[1]} correct letters, but incorrect place`)
+  if(isWin(generatedHints)){
+    console.log('You win!');
+  }
 }
 
 
 function getPrompt() {
   rl.question('guess: ', (guess) => {
-    mastermind(guess);
+    mastermind(solution, guess);
     printBoard();
     getPrompt();
   });
@@ -208,20 +218,22 @@ if (typeof describe === 'function') {
 
   describe('#normalize()', () => {
     it('should change uppercase to lowercase', () => {
-      let actual = generateHint('aAAa', 'aaab');
-      let expected = [0, 0]
+      let actual = normalize('aAAb');
+      let expected = 'aaab'
       assert.deepEqual(actual, expected)
     });
-    it('should not normalize input', () => {
-      const letters = ['a', 'b']
-      const guess = 'cd'
-      const actual = isValid(guess, letters)
-      assert.equal(actual, false);
+  });
+
+  describe('#generateSolution()', () => {
+    it('should generate a solution', () => {
+      let actual = generateSolution();
+      console.log(actual)
+      let expectedLength = 4
+      assert.deepEqual(actual.length, expectedLength)
     });
   });
 
 } else {
-
-  generateSolution();
+  solution = generateSolution();
   getPrompt();
 }
