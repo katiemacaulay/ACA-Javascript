@@ -85,6 +85,13 @@ function isWin(clues) {
   return clues[0] === 4
 }
 
+function isValid(guess, validLetters) {
+  const guessArray = guess.split('');
+  return guessArray.filter(guess => {
+    return validLetters.indexOf(guess) === -1
+  }).length === 0;
+}
+
 function getSmallerValue(val1, val2) {
   if (val1 < val2 ) {
     return val1
@@ -140,7 +147,7 @@ function getPrompt() {
 
 if (typeof describe === 'function') {
   let solution = 'abcd';
-  describe('#mastermind()', () => {
+  describe('#generateHint()', () => {
     it('should register a guess and generate hints1', () => {
       let actual = generateHint('aabb', 'aabc');
       let expected = [3, 0]
@@ -156,30 +163,62 @@ if (typeof describe === 'function') {
       let expected = [2, 1]
       assert.deepEqual(actual, expected)
     });
-    // it('should register a guess and generate hints3', () => {
-    //   let clues = generateHint('aaba', 'aaab');
-    //   let expected = ['r','r','w','w']
-    //   assert.deepEqual(clues, expected)
-    // });
-    // it('should be able to detect a win', () => {
-    //   let didWin = isWin([4,0])
-    //   assert.equal(didWin, true);
-    // });
-    // it('should be able to not detect a win', () => {
-    //   let didWin = isWin([3,1])
-    //   assert.equal(didWin, false);
-    // });
+    it('should register a guess and generate hints4', () => {
+      let actual = generateHint('aaaa', 'bbbb');
+      let expected = [0, 0]
+      assert.deepEqual(actual, expected)
+    });
+    it('should register a guess and generate hints4', () => {
+      let actual = generateHint('aaaa', 'bbbb');
+      let expected = [0, 0]
+      assert.deepEqual(actual, expected)
+    });
+    it('should register a guess and generate hints5', () => {
+      let actual = generateHint('aaah', 'bbbh');
+      let expected = [1, 0]
+      assert.deepEqual(actual, expected)
+    });
   });
 
-  // describe('#generateHint()', () => {
-  //   it('should generate hints', () => {
-  //     assert.equal(generateHint('abdc'), '2-2');
-  //   });
-  //   it('should generate hints if solution has duplicates', () => {
-  //     assert.equal(generateHint('aabb'), '1-1');
-  //   });
+  describe('#isValid()', () => {
+    it('should check validity of guess', () => {
+      const letters = ['a', 'b']
+      const guess = 'ab'
+      const actual = isValid(guess, letters)
+      assert.equal(actual, true);
+    });
+    it('should check invalidity of guess', () => {
+      const letters = ['a', 'b']
+      const guess = 'cd'
+      const actual = isValid(guess, letters)
+      assert.equal(actual, false);
+    });
+  });
 
-  // });
+  describe('#isWin()', () => {
+    it('should be able to detect a win', () => {
+      let didWin = isWin([4,0])
+      assert.equal(didWin, true);
+    });
+    it('should be able to not detect a win', () => {
+      let didWin = isWin([3,1])
+      assert.equal(didWin, false);
+    });
+  });
+
+  describe('#normalize()', () => {
+    it('should change uppercase to lowercase', () => {
+      let actual = generateHint('aAAa', 'aaab');
+      let expected = [0, 0]
+      assert.deepEqual(actual, expected)
+    });
+    it('should not normalize input', () => {
+      const letters = ['a', 'b']
+      const guess = 'cd'
+      const actual = isValid(guess, letters)
+      assert.equal(actual, false);
+    });
+  });
 
 } else {
 
