@@ -64,7 +64,7 @@ let letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
 
 function printBoard() {
   for (let i = 0; i < board.length; i++) {
-    console.log(board[i]);
+    console.log(i+1, board[i]);
   }
 }
 
@@ -86,6 +86,9 @@ function isWin(clues) {
 }
 
 function isValid(guess, validLetters) {
+  if(guess.length !== 4) {
+    return false
+  }
   const guessArray = guess.split('');
   return guessArray.filter(guess => {
     return validLetters.indexOf(guess) === -1
@@ -122,14 +125,27 @@ function getRedPegs(solutionArray, guessArray){
   return redPegs
 }
 
+function updateBoard(guess, hints) {
+  board.push({
+    guess: guess,
+    redPeg: hints[0],
+    whitePeg: hints[1]
+  })
+}
+
 function generateHint(solution, guess){
   const solutionArray = solution.split('')
   const guessArray = guess.split('')
   const redPegs = getRedPegs(solutionArray, guessArray)
   const intersectionCount = getIntersectionCount(solutionArray, guessArray)
   const whitePegs = intersectionCount - redPegs;
-  console.log({redPegs, whitePegs})
   return [redPegs, whitePegs]
+}
+
+function reset(){
+  console.log('Resetting board')
+  solution = generateSolution();
+  board = []
 }
 
 function mastermind(solution, guess) {
@@ -138,9 +154,15 @@ function mastermind(solution, guess) {
     return console.log('insert 4 letters between a and g'); 
   }
   const generatedHints = generateHint(solution, normalizedGuess);
-  console.log(`You have ${generatedHints[0]} correct letters and position, and ${generatedHints[1]} correct letters, but incorrect place`)
+  updateBoard(guess, generatedHints)
   if(isWin(generatedHints)){
-    console.log('You win!');
+    console.log(`You won in ${board.length} moves`);
+    reset();
+    return
+  }
+  if(board.length === 10) {
+    console.log(`Game over, heres the solution ${solution}.`)
+    reset();
   }
 }
 
@@ -193,9 +215,15 @@ if (typeof describe === 'function') {
   describe('#isValid()', () => {
     it('should check validity of guess', () => {
       const letters = ['a', 'b']
-      const guess = 'ab'
+      const guess = 'abbb'
       const actual = isValid(guess, letters)
       assert.equal(actual, true);
+    });
+    it('too many letters in guess', () => {
+      const letters = ['a', 'b', 'c', 'd']
+      const guess = 'abccd'
+      const actual = isValid(guess, letters)
+      assert.equal(actual, false);
     });
     it('should check invalidity of guess', () => {
       const letters = ['a', 'b']
@@ -227,7 +255,6 @@ if (typeof describe === 'function') {
   describe('#generateSolution()', () => {
     it('should generate a solution', () => {
       let actual = generateSolution();
-      console.log(actual)
       let expectedLength = 4
       assert.deepEqual(actual.length, expectedLength)
     });
