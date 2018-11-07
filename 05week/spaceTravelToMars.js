@@ -9,6 +9,15 @@ let jobTypes = {
   programmer: 'Any Ship!'
 };
 
+class Crewmember = {
+  constructor(name, job, specialSkill){
+    this.name = name;
+    this.job = job;
+    this.specialSkill = specialSkill;
+    this.ship = null;
+  }
+}
+
 // Your code here
 
 //tests
