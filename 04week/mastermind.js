@@ -81,11 +81,9 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
-function isWin(clues) {
-  return clues[0] === 4
-}
+const isWin = (clues) => clues[0] === 4;
 
-function isValid(guess, validLetters) {
+const isValid = (guess, validLetters) => {
   if(guess.length !== 4) {
     return false
   }
@@ -95,11 +93,9 @@ function isValid(guess, validLetters) {
   }).length === 0;
 }
 
-function normalize(guess){
-  return guess.toLowerCase();
-}
+const normalize = (guess) => guess.toLowerCase();
 
-function getSmallerValue(val1, val2) {
+const getSmallerValue = (val1, val2) => {
   if (val1 < val2 ) {
     return val1
   } else {
@@ -107,7 +103,7 @@ function getSmallerValue(val1, val2) {
   }
 }
 
-function getIntersectionCount(solutionArray, guessArray){
+const getIntersectionCount = (solutionArray, guessArray) => {
   const solutionContainsGuess = guessArray.filter((guess) => {
     return solutionArray.includes(guess);
   }).length
@@ -118,14 +114,14 @@ function getIntersectionCount(solutionArray, guessArray){
   return intersectionCount
 }
 
-function getRedPegs(solutionArray, guessArray){
+const getRedPegs = (solutionArray, guessArray) => {
   const redPegs = solutionArray.filter((answer, index) => {
     return solutionArray[index] == guessArray[index];
   }).length;
   return redPegs
 }
 
-function updateBoard(guess, hints) {
+const updateBoard = (guess, hints) => {
   board.push({
     guess: guess,
     redPeg: hints[0],
@@ -133,7 +129,7 @@ function updateBoard(guess, hints) {
   })
 }
 
-function generateHint(solution, guess){
+const generateHint = (solution, guess) => {
   const solutionArray = solution.split('')
   const guessArray = guess.split('')
   const redPegs = getRedPegs(solutionArray, guessArray)
@@ -142,13 +138,13 @@ function generateHint(solution, guess){
   return [redPegs, whitePegs]
 }
 
-function reset(){
+const reset = () => {
   console.log('Resetting board')
   solution = generateSolution();
   board = []
 }
 
-function mastermind(solution, guess) {
+const mastermind = (solution, guess) => {
   const normalizedGuess = normalize(guess);
   if(!isValid(normalizedGuess, letters)){
     return console.log('insert 4 letters between a and g'); 
@@ -165,7 +161,6 @@ function mastermind(solution, guess) {
     reset();
   }
 }
-
 
 function getPrompt() {
   rl.question('guess: ', (guess) => {
