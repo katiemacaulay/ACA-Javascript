@@ -7,6 +7,17 @@ const rl = readline.createInterface({
   output: process.stdout
 });
 
+// Create a board of possible moves for + and -
+// then if .includes in *possible move array then move.
+// Create an valid move array, take starting position and (+1 to the array(row) position)- moving foward
+// (-1 to the array number for moving backwards)
+// create board boundaries that move index has to be = or greater than... for this condiditon:
+// Possible moves- check for normal move, then take the index number of the starting array and (+1, or -1) to that index (column) return location as string row/column 
+// check for jump locations (double valid move array)- (+2 or -2) return location as string with column and row
+// then check for double jump (check row +4(-4)) take jump locations and (+2/ -2);
+// if endposition is included in the array of possible wins: then
+// if normal move, check for empty
+// if 
 
 function Checker() {
   // Your code here
