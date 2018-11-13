@@ -19,13 +19,30 @@ const rl = readline.createInterface({
 // if normal move, check for empty
 // if 
 
-function Checker() {
-  // Your code here
+class Checker {
+  constructor(symbol){
+    this.symbol = symbol;
+  }
+
+  foo(){
+    console.log("My symbol is " + this.symbol);
+  }
 }
+
+function bar(checker){
+  console.log("My symbol is " + checker.symbol);
+}
+
+const blackChecker = new Checker('+');
+const whiteChecker = new Checker('-');
 
 class Board {
   constructor() {
     this.grid = []
+
+    var checker = new Checker("9");
+    bar(checker);
+    checker.foo();
   }
   // method that creates an 8x8 array, filled with null values
   createGrid() {
@@ -37,6 +54,7 @@ class Board {
         this.grid[row].push(null);
       }
     }
+
   }
   viewGrid() {
     // add our column numbers
@@ -62,8 +80,37 @@ class Board {
     }
     console.log(string);
   }
+  addSymbols(checker){
 
+  }
   // Your code here
+  setUpBoard(){
+    this.grid[0][0] = whiteChecker;
+    this.grid[0][2] = whiteChecker;
+    this.grid[0][4] = whiteChecker;
+    this.grid[0][6] = whiteChecker;
+    this.grid[1][1] = whiteChecker;
+    this.grid[1][3] = whiteChecker;
+    this.grid[1][5] = whiteChecker;
+    this.grid[1][7] = whiteChecker;
+    this.grid[2][0] = whiteChecker;
+    this.grid[2][2] = whiteChecker;
+    this.grid[2][4] = whiteChecker;
+    this.grid[2][6] = whiteChecker;
+    this.grid[5][1] = blackChecker;
+    this.grid[5][3] = blackChecker;
+    this.grid[5][5] = blackChecker;
+    this.grid[5][7] = blackChecker;
+    this.grid[6][0] = blackChecker;
+    this.grid[6][2] = blackChecker;
+    this.grid[6][4] = blackChecker;
+    this.grid[6][6] = blackChecker;
+    this.grid[7][1] = blackChecker;
+    this.grid[7][3] = blackChecker;
+    this.grid[7][5] = blackChecker;
+    this.grid[7][7] = blackChecker;
+  }
+
 }
 
 class Game {
@@ -72,6 +119,7 @@ class Game {
   }
   start() {
     this.board.createGrid();
+    this.board.setUpBoard();
   }
 }
 
