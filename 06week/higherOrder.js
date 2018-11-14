@@ -7,7 +7,12 @@ function forEach(arr, callback) {
 }
 
 function map(arr, callback) {
-  // Your code here
+  newArr = [];
+  for(let i = 0 ; i< arr.length ; i++ ){
+    const formattedItem = callback(arr[i])
+    newArr.push(formattedItem)
+  }
+  return newArr
 }
 
 function filter(arr, callback) {
