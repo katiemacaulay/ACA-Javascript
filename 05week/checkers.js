@@ -121,7 +121,7 @@ class Game {
     return false
   }
 
-  findLocationOfPossibleCheckerToBeKilled(difference){
+  jumpLocation(difference){
     const findLocation = difference 
     if(difference < 0){
       findLocation + 1;
@@ -130,13 +130,23 @@ class Game {
   }
 
   checkForMoves(startRow, startColumn, endRow, endColumn){
+    const startChecker = this.board.grid[startRow][startColumn];
     const rowDifference = startRow - endRow;
     const columnDifference = startColumn - endColumn;
     if(Math.abs(rowDifference) === 1 && Math.abs(columnDifference) === 1){
       return true
     } else if (Math.abs(rowDifference) === 2 && Math.abs(columnDifference) === 2){
-     
-    }
+      const jumpingRow = this.jumpLocation(rowDifference);
+      const jumpingColumn= this.jumpLocation(columnDifference);
+      const checkerToBeKilled = this.board.grid[jumpingRow][jumpingColumn];
+      if(checkerToBeKilled === null){
+        return false
+      } else if(checkerToBeKilled.symbol === startChecker.symbol){
+        return false
+      }
+      return true
+    } 
+    return false
   }
 
   isValid(startRow, startColumn, endRow, endColumn) {
@@ -157,16 +167,21 @@ function getPrompt() {
   game.board.viewGrid();
   rl.question('which piece?: ', (whichPiece) => {
     rl.question('to where?: ', (toWhere) => {
-      const {startRow, startColumn} = game.processUserInput(startString)
-      const {endRow, endColumn} = game.processUserInput(endString)
+      const {startRow, startColumn} = game.processUserInput(whichPiece)
+      const {endRow, endColumn} = game.processUserInput(toWhere)
       const validMove = this.isValid(startRow, startColumn, endRow, endColumn)
       if(!validMove) {
         console.log('invalid move')
         getPrompt()
         return;
       }
-      game.moveChecker(startRow, startColumn, endRow, endColumn);
+      const ableToMoveChecker = this.checkForMoves(startRow, startColumn, endRow, endColumn);
+      if(ableToMoveChecker){
+        game.moveChecker(startRow, startColumn, endRow, endColumn);
+      } 
+      console.log('invalid move, try again')
       getPrompt();
+      return;
     });
   });
 }
@@ -189,25 +204,49 @@ if (typeof describe === 'function') {
   //   });
 
   // });
-
-  describe('Game.isValid()', () => {
-    it('should be a valid move/ checking for basic movement forward and checker to null spot', () => {
-      const validMove = game.isValid(2, 0, 3, 0);
-      assert.equal(validMove, true);
+  // describe('game.processUserInput()', () => {
+  //   it('should be return integers for the location of row and column of start and end', () => {
+  //     const {startRow, startColumn} = game.processUserInput('20')
+  //     const {endRow, endColumn} = game.processUserInput('31')
+  //     assert.equal(startRow, 2);
+  //   });
+  // });
+  describe('checkForMoves(startRow, startColumn, endRow, endColumn)', () => {
+      it('should be ok with a move', () => {
+        const checkForMove = game.checkForMoves(2, 2, 3, 3)
+        assert.equal(checkForMove, true);
+      });
+      it('should be ok with a move', () => {
+        const checkForMove = game.checkForMoves(5, 1, 4, 0)
+        assert.equal(checkForMove, true);
+      });
+      it('should not jump', () => {
+        const checkForMove = game.checkForMoves(5, 1, 5, 2)
+        assert.equal(checkForMove, false);
+      });
+      it('should jump checker', () => {
+        const checkForMove = game.checkForMoves(5, 1, 3, 3)
+        assert.equal(checkForMove, false);
+      });
     });
-    it('should be a valid move/ checking for possible direction', () => {
-      const validMove = game.isValid(2, 0, 1, 0);
-      assert.equal(validMove, false);
-    });
-    it('should be a valid move/ checking for an empty ending position', () => {
-      const validMove = game.isValid(0, 0, 1, 1);
-      assert.equal(validMove, false);
-    });
-    it('should be a valid move/ checking for empty starting position', () => {
-      const validMove = game.isValid(2, 1, 1, 1);
-      assert.equal(validMove, false);
-    });
-  });
+  // describe('Game.isValid()', () => {
+  //   it('should be a valid move/ checking for basic movement forward and checker to null spot', () => {
+  //     const validMove = game.isValid(2, 0, 3, 0);
+  //     assert.equal(validMove, true);
+  //   });
+  //   it('should be a valid move/ checking for possible direction', () => {
+  //     const validMove = game.isValid(2, 0, 1, 0);
+  //     assert.equal(validMove, false);
+  //   });
+  //   it('should be a valid move/ checking for an empty ending position', () => {
+  //     const validMove = game.isValid(0, 0, 1, 1);
+  //     assert.equal(validMove, false);
+  //   });
+  //   it('should be a valid move/ checking for empty starting position', () => {
+  //     const validMove = game.isValid(2, 1, 1, 1);
+  //     assert.equal(validMove, false);
+  //   });
+  // });
 
   // describe('Game.moveChecker()', () => {
   //   it('should move a checker', () => {
