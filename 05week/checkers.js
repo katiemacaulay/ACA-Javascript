@@ -139,12 +139,13 @@ class Game {
       const jumpingRow = this.jumpLocation(rowDifference);
       const jumpingColumn= this.jumpLocation(columnDifference);
       const checkerToBeKilled = this.board.grid[jumpingRow][jumpingColumn];
-      if(checkerToBeKilled === null){
-        return false
-      } else if(checkerToBeKilled.symbol === startChecker.symbol){
-        return false
-      }
-      return true
+      return console.log(checkerToBeKilled)
+      // if(checkerToBeKilled === null){
+      //   return false
+      // } else if(checkerToBeKilled.symbol === startChecker.symbol){
+      //   return false
+      // }
+      // return true
     } 
     return false
   }
