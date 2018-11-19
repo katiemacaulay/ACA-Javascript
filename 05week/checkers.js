@@ -106,61 +106,85 @@ class Game {
   processUserInput(userString) {
     const row = parseInt(userString.split('')[0])
     const column = parseInt(userString.split('')[1])
-    return {row, column}
+    return {
+      row: row, 
+      column: column
+    }
   }
-  moveChecker(startRow, startColumn, endRow, endColumn) {
-    this.board.grid[endRow][endColumn] = this.board.grid[startRow][startColumn]
-    this.board.grid[startRow][startColumn] = null
+  getCheckerFromCoordinates(coordinates) {
+    return this.board.grid[coordinates.row][coordinates.column] 
   }
-  isInvalidDirection(startChecker, startRow, endRow){
-    if(startChecker.symbol === '+' && (endRow - startRow) > 0){
+  setCheckerFromCoordinates(coordinates, checker) {
+    this.board.grid[coordinates.row][coordinates.column] = checker
+  }
+  moveChecker(startCoordinates, endCoordinates) {
+    const checker = this.getCheckerFromCoordinates(startCoordinates)
+    this.setCheckerFromCoordinates(endCoordinates, checker)
+    this.setCheckerFromCoordinates(startCoordinates, null)
+  }
+  isInvalidDirection(startChecker, startCoordinates, endCoordinates){
+    if(startChecker.symbol === '+' && (endCoordinates.row - startCoordinates.row) > 0){
       return true
-    } else if(startChecker.symbol === '-' && (startRow - endRow) > 0){
+    } else if(startChecker.symbol === '-' && (startCoordinates.row - endCoordinates.row) > 0){
       return true
     } 
     return false
   }
 
-  jumpLocation(difference){
-    const findLocation = difference 
-    if(difference < 0){
-      findLocation + 1;
-    } else if(difference > 0)
-      findLocation - 1;
-  }
-
-  checkForMoves(startRow, startColumn, endRow, endColumn){
-    const startChecker = this.board.grid[startRow][startColumn];
-    const rowDifference = startRow - endRow;
-    const columnDifference = startColumn - endColumn;
+  checkForMoves(startCoordinates, endCoordinates){
+    const rowDifference = startCoordinates.row - endCoordinates.row;
+    const columnDifference = startCoordinates.column - endCoordinates.column;
     if(Math.abs(rowDifference) === 1 && Math.abs(columnDifference) === 1){
       return true
-    } else if (Math.abs(rowDifference) === 2 && Math.abs(columnDifference) === 2){
-      const jumpingRow = this.jumpLocation(rowDifference);
-      const jumpingColumn= this.jumpLocation(columnDifference);
-      const checkerToBeKilled = this.board.grid[jumpingRow][jumpingColumn];
-      return console.log(checkerToBeKilled)
-      // if(checkerToBeKilled === null){
-      //   return false
-      // } else if(checkerToBeKilled.symbol === startChecker.symbol){
-      //   return false
-      // }
-      // return true
     } 
     return false
   }
-
-  isValid(startRow, startColumn, endRow, endColumn) {
-    const startChecker = this.board.grid[startRow][startColumn];
-    const endChecker = this.board.grid[endRow][endColumn];
+  checkForKill(startCoordinates, endCoordinates){
+    const startChecker = this.getCheckerFromCoordinates(startCoordinates)
+    const rowDifference = startCoordinates.row - endCoordinates.row;
+    const columnDifference = startCoordinates.column - endCoordinates.column;
+    if (Math.abs(rowDifference) === 2 && Math.abs(columnDifference) === 2){
+      const jumpingRow = (startCoordinates.row + endCoordinates.row) / 2
+      const jumpingColumn = (startCoordinates.column + endCoordinates.column) / 2
+      const checkerToBeKilled = this.board.grid[jumpingRow][jumpingColumn];
+      if(!checkerToBeKilled){
+        return false
+      } else if(checkerToBeKilled.symbol === startChecker.symbol){
+        return false
+      }
+      return true
+    } 
+    return false
+  }
+  killChecker(startCoordinates, endCoordinates) {
+    const startChecker = this.getCheckerFromCoordinates(startCoordinates)
+    const jumpingRow = (startCoordinates.row + endCoordinates.row) / 2
+    const jumpingColumn = (startCoordinates.column + endCoordinates.column) / 2
+    this.setCheckerFromCoordinates({row: jumpingRow, column: jumpingColumn}, null)
+    this.setCheckerFromCoordinates(endCoordinates, startChecker)
+    this.setCheckerFromCoordinates(startCoordinates, null)
+  }
+  isValid(startCoordinates, endCoordinates) {
+    const startChecker = this.board.grid[startCoordinates.row][startCoordinates.column];
+    const endChecker = this.board.grid[endCoordinates.row][endCoordinates.column];
     if (startChecker === null) {
       return false
     } else if(endChecker !== null){
       return false
-    } else if(this.isInvalidDirection(startChecker, startRow, endRow)){
+    } else if(this.isInvalidDirection(startChecker, startCoordinates, endCoordinates)){
       return false
     } 
     return true
+  }
+  getCheckersCountBySymbol(symbol) {
+    return this.board.grid.reduce((count, row) => {
+      return count + row.filter(item => item && item.symbol === symbol).length
+    }, 0)
+  }
+  isWin(){
+    const redCount = this.getCheckersCountBySymbol('+')
+    const blackCount = this.getCheckersCountBySymbol('-')
+    return redCount === 0 || blackCount === 0
   }
 }
 
@@ -168,21 +192,29 @@ function getPrompt() {
   game.board.viewGrid();
   rl.question('which piece?: ', (whichPiece) => {
     rl.question('to where?: ', (toWhere) => {
-      const {startRow, startColumn} = game.processUserInput(whichPiece)
-      const {endRow, endColumn} = game.processUserInput(toWhere)
-      const validMove = this.isValid(startRow, startColumn, endRow, endColumn)
+      const startCoordinates = game.processUserInput(whichPiece)
+      const endCoordinates = game.processUserInput(toWhere)
+      const validMove = game.isValid(startCoordinates, endCoordinates)
       if(!validMove) {
         console.log('invalid move')
         getPrompt()
         return;
       }
-      const ableToMoveChecker = this.checkForMoves(startRow, startColumn, endRow, endColumn);
-      if(ableToMoveChecker){
-        game.moveChecker(startRow, startColumn, endRow, endColumn);
-      } 
-      console.log('invalid move, try again')
+      const isMove = game.checkForMoves(startCoordinates, endCoordinates);
+      const isKill = game.checkForKill(startCoordinates, endCoordinates);
+      if(isMove){
+        game.moveChecker(startCoordinates, endCoordinates);
+      } else if(isKill){
+        game.killChecker(startCoordinates, endCoordinates);
+      } else {
+        console.log('invalid move')
+      }
+      if(game.isWin()){
+        console.log('You Win!');
+        game = new Game();
+        game.start();
+      }
       getPrompt();
-      return;
     });
   });
 }
@@ -193,58 +225,65 @@ game.start();
 
 // Tests
 if (typeof describe === 'function') {
-  // describe('Game', () => {
-  //   it('should have a board', () => {
-  //     assert.equal(game.board.constructor.name, 'Board');
-  //   });
-  //   it('board should have 8 rows', () => {
-  //     assert.equal(game.board.grid.length, 8);
-  //   });
-  //   it('each row should have 8 columns', () => {
-  //     game.board.grid.forEach((row) => assert.equal(row.length, 8))
-  //   });
-
-  // });
-  // describe('game.processUserInput()', () => {
-  //   it('should be return integers for the location of row and column of start and end', () => {
-  //     const {startRow, startColumn} = game.processUserInput('20')
-  //     const {endRow, endColumn} = game.processUserInput('31')
-  //     assert.equal(startRow, 2);
-  //   });
-  // });
-  describe('checkForMoves(startRow, startColumn, endRow, endColumn)', () => {
-      it('should be ok with a move', () => {
-        const checkForMove = game.checkForMoves(2, 2, 3, 3)
-        assert.equal(checkForMove, true);
-      });
-      it('should be ok with a move', () => {
-        const checkForMove = game.checkForMoves(5, 1, 4, 0)
-        assert.equal(checkForMove, true);
-      });
-      it('should not jump', () => {
-        const checkForMove = game.checkForMoves(5, 1, 5, 2)
-        assert.equal(checkForMove, false);
-      });
-      it('should jump checker', () => {
-        const checkForMove = game.checkForMoves(5, 1, 3, 3)
-        assert.equal(checkForMove, false);
-      });
+  describe('Game', () => {
+    it('should have a board', () => {
+      assert.equal(game.board.constructor.name, 'Board');
     });
+    it('board should have 8 rows', () => {
+      assert.equal(game.board.grid.length, 8);
+    });
+    it('each row should have 8 columns', () => {
+      game.board.grid.forEach((row) => assert.equal(row.length, 8))
+    });
+
+  });
+  describe('game.processUserInput()', () => {
+    it('should be return integers for the location of row and column of start and end', () => {
+      const startCoordinates = game.processUserInput('20')
+      const endCoordinates = game.processUserInput('31')
+      assert.equal(startCoordinates.row, 2);
+    });
+  });
+  describe('checkForMoves(startCoordinates, endCoordinates)', () => {
+    it('should be ok with a move', () => {
+      const checkForMove = game.checkForMoves({row: 2, column: 2}, {row: 3, column: 3})
+      assert.equal(checkForMove, true);
+    });
+    it('should be ok with a move', () => {
+      const checkForMove = game.checkForMoves({row: 5, column: 1}, {row: 4, column: 0})
+      assert.equal(checkForMove, true);
+    });
+    it('should not jump', () => {
+      const checkForMove = game.checkForMoves({row: 5, column: 1}, {row: 5, column: 2})
+      assert.equal(checkForMove, false);
+    });
+  });
+  describe('checkForKill(startCoordinates, endCoordinates)', () => {
+    it('should jump checker false', () => {
+      const isKill = game.checkForKill({row: 5, column: 1}, {row: 3, column: 3})
+      assert.equal(isKill, false);
+    });
+    it('should jump checker true', () => {
+      game.board.grid[3][1] = new Checker('+');
+      const isKill = game.checkForKill({row: 2, column: 2}, {row: 4, column: 0})
+      assert.equal(isKill, true);
+    });
+  });
   // describe('Game.isValid()', () => {
   //   it('should be a valid move/ checking for basic movement forward and checker to null spot', () => {
-  //     const validMove = game.isValid(2, 0, 3, 0);
+  //     const validMove = game.isValid({row: 2, column: 0}, {row: 3, column: 0});
   //     assert.equal(validMove, true);
   //   });
   //   it('should be a valid move/ checking for possible direction', () => {
-  //     const validMove = game.isValid(2, 0, 1, 0);
+  //     const validMove = game.isValid({row: 2, column: 0}, {row: 1, column: 0});
   //     assert.equal(validMove, false);
   //   });
   //   it('should be a valid move/ checking for an empty ending position', () => {
-  //     const validMove = game.isValid(0, 0, 1, 1);
+  //     const validMove = game.isValid({row: 0, column: 0}, {row: 1, column: 1});
   //     assert.equal(validMove, false);
   //   });
   //   it('should be a valid move/ checking for empty starting position', () => {
-  //     const validMove = game.isValid(2, 1, 1, 1);
+  //     const validMove = game.isValid({row: 2, column: 1}, {row: 1, column: 1});
   //     assert.equal(validMove, false);
   //   });
   // });
@@ -253,15 +292,27 @@ if (typeof describe === 'function') {
   //   it('should move a checker', () => {
   //     assert(game.board.grid[2][0]);
   //     assert(!game.board.grid[3][0]);
-  //     game.moveChecker('20', '30');
+  //     game.moveChecker({row: 2, column: 0}, {row: 3, column: 0});
   //     assert(game.board.grid[3][0]);
   //   });
   //   it('should be able to jump over and kill another checker', () => {
-  //     game.moveChecker('30', '52');
+  //     game.moveChecker({row: 3, column: 0}, {row: 5, column: 2});
   //     assert(game.board.grid[5][2]);
   //     assert(!game.board.grid[4][1]);
-  //     assert.equal(game.board.checkers.length, 23);
+  //     // assert.equal(game.board.checkers.length, 23);
   //   });
+  // });
+  // describe('Game.getCheckersCount()', () => {
+  //   it('should get checker count', () => {
+  //     const count = game.getCheckersCountBySymbol('+');
+  //     assert(count, 12);
+  //   });
+  //   it('should get checker count', () => {
+  //     const count = game.getCheckersCountBySymbol('+');
+  //     game.board.grid[7][7] = null;
+  //     assert(count, 11);
+  //   });
+
   // });
 } else {
   getPrompt();
