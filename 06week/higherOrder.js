@@ -28,12 +28,24 @@ function filter(arr, callback) {
 }
 
 function some(arr, callback) {
-  // Your code here
+  const newArr = [];
+  for(let i = 0 ; i < arr.length ; i++){
+    if(callback(arr[i])){
+      newArr.push(arr[i]);
+    }
+  }
+  return newArr
 }
 
-// function every(arr, callback) {
-//   // Your code here
-// }
+function every(arr, callback) {
+  const newArr = [];
+  for(let i = 0 ; i < arr.length ; i++){
+    if(callback(arr[i])){
+      newArr.push(arr[i]);
+    }
+  }
+  return newArr
+}
 
 if (typeof describe === 'function') {
 
@@ -69,48 +81,50 @@ if (typeof describe === 'function') {
     });
   });
 
-  // describe('#some()', () => {
-  //   let count = 0;
-  //   const somed = some([1, 2, 3, 4], (num) => {
-  //     count++;
-  //     return num % 2 === 0;
-  //   });
-  //   it('should return true if at least one item passes the predicate test', () => {
-  //     assert.equal(somed, true);
-  //   });
-  //   it('should stop at the first item that passes the predicate test', () => {
-  //     assert.equal(count, 2);
-  //   });
-  //   it('should return false if no items pass the predicate test', () => {
-  //     const somed = some([1, 3, 5], (num) => {
-  //       return num % 2 === 0;
-  //     });
-  //     assert.equal(somed, false);
-  //   });
-  // });
+  describe('#some()', () => {
+    let count = 0;
+    const somed = some([1, 2, 3, 4], (num) => {
+      count++;
+      return num % 2 === 0;
+    });
+    it('should return true if at least one item passes the predicate test', () => {
+      assert.equal(somed, true);
+    });
+    it('should stop at the first item that passes the predicate test', () => {
+      assert.equal(count, 2);
+    });
+    it('should return false if no items pass the predicate test', () => {
+      const somed = some([1, 3, 5], (num) => {
+        return num % 2 === 0;
+      });
+      assert.equal(somed, false);
+    });
+  });
 
-  // describe('#every()', () => {
-  //   it('should return true if at all passes the predicate test', () => {
-  //     const everied = every([2, 4, 6], (num) => {
-  //       return num % 2 === 0;
-  //     });
-  //     assert.equal(everied, true);
-  //   });
-  //   let count = 0;
-  //   const everied = every([2, 3, 4, 5], (num) => {
-  //     count++;
-  //     return num % 2 === 0;
-  //   });
-  //   it('should return false if any item fails the predicate test', () => {
-  //     assert.equal(everied, false);
-  //   });
-  //   it('should stop at the first item that fails the predicate test', () => {
-  //     assert.equal(count, 2);
-  //   });
-  // });
+  describe('#every()', () => {
+    it('should return true if at all passes the predicate test', () => {
+      const everied = every([2, 4, 6], (num) => {
+        return num % 2 === 0;
+      });
+      assert.equal(everied, true);
+    });
+    let count = 0;
+    const everied = every([2, 3, 4, 5], (num) => {
+      count++;
+      return num % 2 === 0;
+    });
+    it('should return false if any item fails the predicate test', () => {
+      assert.equal(everied, false);
+    });
+    it('should stop at the first item that fails the predicate test', () => {
+      assert.equal(count, 2);
+    });
+  });
 
 } else {
 
   console.log('Only run the tests on this one!')
 
 }
+
+// one word two_two word full line
