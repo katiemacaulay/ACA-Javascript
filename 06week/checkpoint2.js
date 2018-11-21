@@ -13,13 +13,7 @@ const sumEvens = nums.filter(num => num % 2 === 0)
 console.log(sumEvens)
 
 // // Find the index of the first "Austin" value (the value plus its index equals 512)
-for (let i = 0; i < nums.length; i++) {
-  const value = nums[i];
-  if(value + i === 512){
-    atxIdx = i
-    break
-  }
-}
+const atxIdx = nums.findIndex((value, index) => value + index === 512)
 
 console.log(`index: ${atxIdx}, value: ${nums[atxIdx]}`);
 
