@@ -7,17 +7,13 @@ console.log(nums)
 
 
 // Find the sum of the even values
-const sumEvens = nums.reduce((sum, num) => {
-    if(num % 2 === 0){
-      return sum + num
-    } 
-    return sum
-  }, 0);
+const evensNums = nums.filter(num => num % 2 === 0);
+const sumEvens = evensNums.reduce((sum, num) => sum + num, 0);
   
-  console.log(sumEvens)
+console.log(sumEvens)
 
 // // Find the index of the first "Austin" value (the value plus its index equals 512)
-const atxIdx;
+const atxIdx = 
 
 console.log(`index: ${atxIdx}, value: ${nums[atxIdx]}`);
 
