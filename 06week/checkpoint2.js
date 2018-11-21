@@ -102,6 +102,6 @@ console.log(weatherStatesNames(weatherStates))
 
 // //find the id of the object in weather that has a min_temp of 15.915
 
-const idealTemp = 
+const idealTemp = weather.find(value => value.min_temp == 15.915)
 
-console.log(idealTemp)
+console.log(idealTemp.id)
