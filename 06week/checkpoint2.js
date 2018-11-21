@@ -7,13 +7,19 @@ console.log(nums)
 
 
 // Find the sum of the even values
-const evensNums = nums.filter(num => num % 2 === 0);
-const sumEvens = evensNums.reduce((sum, num) => sum + num, 0);
+const sumEvens = nums.filter(num => num % 2 === 0)
+                    .reduce((sum, num) => sum + num, 0);
   
 console.log(sumEvens)
 
 // // Find the index of the first "Austin" value (the value plus its index equals 512)
-const atxIdx = 
+for (let i = 0; i < nums.length; i++) {
+  const value = nums[i];
+  if(value + i === 512){
+    atxIdx = i
+    break
+  }
+}
 
 console.log(`index: ${atxIdx}, value: ${nums[atxIdx]}`);
 
@@ -85,8 +91,8 @@ const weather = [
 ],
 
 // //using a higher order function, create an array of the unique 'weather_state_name' values of the weather array. Your function should return the following array ['Light Cloud', 'Heavy Cloud', 'Showers']
-// const weatherStates = 
-// console.log(weatherStates)
+const weatherStates = 
+console.log(weatherStates)
 
 // //find the id of the object in weather that has a min_temp of 15.915
 
