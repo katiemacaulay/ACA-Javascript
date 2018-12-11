@@ -16,9 +16,9 @@ class CrewMember {
     this.specialSkill = specialSkill;
     this.ship = null;
   }
-  enterShip(ship)  {
-    this.ship = ship;
-    ship.crew.push(this);
+  enterShip(shipToEnter)  {
+    this.ship = shipToEnter;
+    shipToEnter.crew.push(this);
   }
 }
 
