@@ -100,4 +100,4 @@ if (typeof describe === 'function') {
 
   console.log('Only run the tests on this one!')
 
-} 
+}
