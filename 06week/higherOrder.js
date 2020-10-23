@@ -2,32 +2,57 @@
 
 const assert = require('assert');
 
-function forEach(arr, callback) {
-  // Your code here
+function myForEach(arr, callback) {
+  for(let i = 0 ; i< arr.length ; i++ ){
+    callback(arr[i])
+  }
 }
 
-function map(arr, callback) {
-  // Your code here
+function map(arr, mapped) {
+  const newArr = [];
+  for(let i = 0 ; i< arr.length ; i++ ){
+    const formattedItem = mapped(arr[i])
+    newArr.push(formattedItem)
+  }
+  return newArr
 }
 
 function filter(arr, callback) {
-  // Your code here
+  const newArr = [];
+  for(let i = 0 ; i < arr.length ; i++){
+    if(callback(arr[i])){
+      newArr.push(arr[i]);
+    }
+  }
+  return newArr
 }
 
 function some(arr, callback) {
-  // Your code here
+  const newArr = [];
+  for(let i = 0 ; i < arr.length ; i++){
+    if(callback(arr[i])){
+      newArr.push(arr[i]);
+    }
+  }
+  return newArr
 }
 
 function every(arr, callback) {
-  // Your code here
+  const newArr = [];
+  for(let i = 0 ; i < arr.length ; i++){
+    if(callback(arr[i])){
+      newArr.push(arr[i]);
+    }
+  }
+  return newArr
 }
 
 if (typeof describe === 'function') {
 
-  describe('#forEach()', () => {
+  describe('#myForEach()', () => {
     it('should call the callback the array.length number of times', () => {
       let count = 0;
-      forEach([1, 2, 3], () => {
+      myForEach([1, 2, 3], () => {
         count++;
       });
       assert.equal(count, 3);
@@ -101,3 +126,5 @@ if (typeof describe === 'function') {
   console.log('Only run the tests on this one!')
 
 }
+
+// one word two_two word full line
