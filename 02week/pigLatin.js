@@ -7,17 +7,64 @@ const rl = readline.createInterface({
   output: process.stdout
 });
 
+ // Create an array of the word using split('')
 
-function pigLatin(word) {
+  // check that input is valid isValid(): 
+ 
+  // create a variable that identifies vowels
+  // create a variable that identify constanants or !vowel
 
-  // Your code here
+  // function checkFirstLetters (Check the first letters of string)
+  // Take the consonants and move to the end of word function sendToEndOfWord
 
+  // if the array[0] = vowel then word.push 'y' 'a' 'y'
+  // else return checkFirstLetters + 'a' + 'y'
+
+const wordOnlyHasLetters = (word) => {
+  const wordArray = word.split('');
+  const filterLetters = (character) => !parseInt(character);
+  const lettersArray = wordArray.filter(filterLetters)
+  const isValid = (arr1, arr2) => arr1.length == arr2.length;
+  return isValid(wordArray, lettersArray);
 }
+
+const findPositionofFirstVowel = (word) =>{ 
+  const vowel = ['a', 'e', 'i', 'o', 'u'];
+  const wordArray = word.split('');
+  const isVowel = (letter) => !vowel.includes(letter)
+  const someArray = wordArray.map(isVowel)
+  return someArray.indexOf(false)
+}
+
+const sendToEndOfWord = (word, position) => {
+  const wordArray = word.split('');
+  const cutConsonant = wordArray.slice(position);
+  const cutOffPart = wordArray.slice(0, position);
+  return cutConsonant.join('') + cutOffPart.join('');
+}
+
+const pigLatin = (word) => {
+  if(!wordOnlyHasLetters(word) || word === ''){
+    return word
+  }
+  const position = findPositionofFirstVowel(word);
+  if(position === 0){
+    return word + 'yay';
+  }
+  return sendToEndOfWord(word, position) + 'ay';
+};
+
+const translatePhrase = (ph) => {
+  return ph.split(' ').map(pigLatin).join(' ');
+}
+
+let a = translatePhrase("r2d2 was here")
+console.log(a)
 
 
 function getPrompt() {
-  rl.question('word ', (answer) => {
-    console.log( pigLatin(answer) );
+  rl.question('enter a word or phrase: ', (answer) => {
+    console.log( translatePhrase(answer) );
     getPrompt();
   });
 }
